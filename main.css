@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h2 {
+    margin: 0;
+    margin-bottom: 15px;
+}
+
+header {
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    gap: 20px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 900px) {
+    .container {
+        margin: 30px 15px;
+    }
+}
+
+.season-group {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+.season-group h3 {
+    margin-top: 0;
+}
+
+.episode-input {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.episode-input input {
+    flex: 1;
+}
+
+label {
+    display: block;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+textarea {
+    width: 100%;
+    height: 300px;
+    margin: 20px 0;
+    display: none;
+}
+
+.copy-btn {
+    display: none;
+    margin-top: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border 0.3s;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #333;
+    outline: none;
+}
+
+.warning {
+    color: #e63946;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
