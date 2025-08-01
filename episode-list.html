@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Tạo mã HTML - Danh sách tập | HẻmBL Studio</title>
+</head>
+
+<body>
+    <header>
+        <a href="/info.html">Tạo thông tin</a>
+        <a href="/episode-list.html">Tạo danh sách tập</a>
+        <a href="/tutorial.html">Hướng dẫn</a>
+    </header>
+    <div class="container">
+        <h2>Tạo mã HTML - Danh sách tập</h2>
+        <div id="season-list"></div>
+        <button onclick="addSeason()">+ Thêm phần</button>
+        <button onclick="generateHTML()">Tạo mã HTML</button>
+        <textarea id="output"></textarea>
+        <button class="copy-btn" onclick="copyCode()">Copy</button>
+    </div>
+
+    <script>
+        let seasonCount = 0;
+
+        function addSeason() {
+            seasonCount++;
+            const container = document.createElement('div');
+            container.className = 'season-group';
+            container.innerHTML = `
+        <h3>${seasonCount > 1 ? 'Phần ' + seasonCount : 'Phần 1'}</h3>
+        <input type="text" placeholder="Tên mùa (hiển thị trong tab)" class="season-title"><br><br>
+        <div class="episodes"></div>
+        <button onclick="addEpisode(this)">+ Thêm tập</button>
+      `;
+            document.getElementById('season-list').appendChild(container);
+        }
+
+        function addEpisode(btn) {
+            const episodeList = btn.previousElementSibling;
+            const div = document.createElement('div');
+            div.className = 'episode-input';
+            div.innerHTML = `
+        <input type="text" placeholder="Tên tập (hiển thị)" class="ep-name">
+        <input type="text" placeholder="Link YouTube hoặc embed" class="ep-link">
+      `;
+            episodeList.appendChild(div);
+        }
+
+        function convertYouTube(url) {
+            const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)||youtu\.be\/)([\w-]{11})/);
+            return match ? `https://www.youtube.com/embed/${match[1]}` : url;
+        }
+
+        function generateHTML() {
+            const output = document.getElementById('output');
+            const allSeasons = document.querySelectorAll('.season-group');
+            let result = `<!--[ Video Player ]-->\n<div class="player-wrapper">\n  <div id="player_embed">\n    <iframe allowfullscreen="" src=""></iframe>\n  </div>\n  <div class="tabs servers">\n`;
+
+            allSeasons.forEach((season, index) => {
+                const titleInput = season.querySelector('.season-title');
+                const title = titleInput.value.trim() || `Phần ${index + 1}`;
+                result += `<span class="tablinks${index === 0 ? ' active' : ''}" onclick="openServer(event, 'season${index + 1}')">${title}</span>\n`;
+            });
+
+            result += `</div>\n`;
+
+            allSeasons.forEach((season, index) => {
+                const episodes = season.querySelectorAll('.episode-input');
+                result += `<ul class="serverEpisode${index === 0 ? ' active' : ''}" id="season${index + 1}">\n`;
+                episodes.forEach(ep => {
+                    const name = ep.querySelector('.ep-name').value.trim() || 'Tập';
+                    const link = convertYouTube(ep.querySelector('.ep-link').value.trim());
+                    result += `  <li><div class="DagPlayOpt" data-embed="${link}">${name}</div></li>\n`;
+                });
+                result += `</ul>\n`;
+            });
+
+            result += `</div>`;
+
+            output.value = result;
+            output.style.display = 'block';
+            document.querySelector('.copy-btn').style.display = 'inline-block';
+        }
+
+        function copyCode() {
+            const output = document.getElementById('output');
+            output.select();
+            document.execCommand('copy');
+            output.style.display = 'none';
+            document.querySelector('.copy-btn').style.display = 'none';
+            output.value = '';
+            document.getElementById('season-list').innerHTML = '';
+            seasonCount = 0;
+            alert("✅ Đã copy mã HTML");
+        }
+    </script>
+</body>
+
+</html>
